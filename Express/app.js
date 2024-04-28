@@ -5,6 +5,7 @@ const PORT = 5000;
 
 const protectedRoute = require('./Controllers/HelloWorldController');
 const loginRoute=require("./Controllers/LoginController");
+const sequelize=require("./models/Server");
 app.use('/helloworld', protectedRoute)
 app.use('/', loginRoute)
 app.listen(PORT, (error) => {

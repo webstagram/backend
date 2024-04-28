@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 const CLIENT_ID = process.env.GITHUB_CLIENT_ID;
 const CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
+const { getUserIDByUsername } = require("../Services/UsersService");
 router.get('/github/callback', (request, result) => {
     // The req.query object has the query params that were sent to this route.
     const requestToken = request.query.code;
@@ -41,23 +42,33 @@ router.get('/welcome', (request, result) => {
         }
     })
         .then(res => res.json())
-        .then(res => {
-            let token;
-            try {
-                token = jwt.sign({ user: res.login },
-                    JWT_SECRET_KEY,
-                    { expiresIn: "1h" });
+        .then(async res => {
+            if (res.message) {
+                result.status(400).send(`An error occurred with your GitHub authentication: ${res.message} \nPlease login again`);
+
             }
-            catch (err) {
-                console.log(err);
-                const error =
-                    new Error("Error! Something went wrong.");
-                result.status(400)
-                result.send(error);
+            else {
+                const userID=await getUserIDByUsername(res.login);
+                console.log(userID);
+
+                let token;
+                try {
+                    token = jwt.sign({ user: res.login },
+                        JWT_SECRET_KEY,
+                        { expiresIn: "1h" });
+                }
+                catch (err) {
+                    console.log(err);
+                    const error =
+                        new Error("Error! Something went wrong.");
+                    result.status(400)
+                    result.send(error);
+                }
+
+                result.send(`hello ${res.login}
+                your jwt is ${token}`);
             }
 
-            result.send(`hello ${res.login}
-            your jwt is ${token}`);
         })
 });
 module.exports = router;
