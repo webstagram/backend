@@ -60,7 +60,6 @@ router.get('/github/callback', (request, result) => {
                     name: res.login,
                     jwt: token
                 }
-               // result.redirect(`http://localhost:3000/csshello?token=${token}`);
                 result.json(data)
             }
 
@@ -69,9 +68,4 @@ router.get('/github/callback', (request, result) => {
         });
 });
 
-router.get('/welcome', (request, result) => {
-    const accessToken = request.query.accessToken;
-    console.log(accessToken);
-    
-});
 module.exports = router;
