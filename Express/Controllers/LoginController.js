@@ -27,16 +27,7 @@ router.get('/github/callback', (request, result) => {
                 const accessToken = data.access_token;
                 console.log(data);
 
-                result.redirect(`/welcome?accessToken=${accessToken}`);
-            }
-        })
-        ;
-});
-
-router.get('/welcome', (request, result) => {
-    const accessToken = request.query.accessToken;
-    console.log(accessToken);
-    fetch('https://api.github.com/user', {
+                fetch('https://api.github.com/user', {
         headers: {
             Authorization: 'token ' + accessToken
         }
@@ -53,7 +44,8 @@ router.get('/welcome', (request, result) => {
 
                 let token;
                 try {
-                    token = jwt.sign({ user: res.login },
+                    token = jwt.sign({ userID: userID,
+                        userName: res.login },
                         JWT_SECRET_KEY,
                         { expiresIn: "1h" });
                 }
@@ -64,11 +56,22 @@ router.get('/welcome', (request, result) => {
                     result.status(400)
                     result.send(error);
                 }
-
-                result.send(`hello ${res.login}
-                your jwt is ${token}`);
+                const data={
+                    name: res.login,
+                    jwt: token
+                }
+               // result.redirect(`http://localhost:3000/csshello?token=${token}`);
+                result.json(data)
             }
 
         })
+            }
+        });
+});
+
+router.get('/welcome', (request, result) => {
+    const accessToken = request.query.accessToken;
+    console.log(accessToken);
+    
 });
 module.exports = router;
