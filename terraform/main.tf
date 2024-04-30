@@ -81,16 +81,16 @@ resource "aws_vpc_security_group_ingress_rule" "rds_sg" {
 }
 #endregion
 
-#region Source Bundle Storage
+#region Bucket
 # Create an S3 bucket with versioning to store the API source bundle
-resource "aws_s3_bucket" "source" {
-  bucket        = "${var.naming_prefix}-source-bucket"
+resource "aws_s3_bucket" "photos" {
+  bucket        = "${var.naming_prefix}-photo-bucket"
   force_destroy = true
-  tags          = { Name = "${var.naming_prefix}-source-bucket" }
+  tags          = { Name = "${var.naming_prefix}-photo-bucket" }
 }
 
-resource "aws_s3_bucket_versioning" "source_versioning" {
-  bucket = aws_s3_bucket.source.id
+resource "aws_s3_bucket_versioning" "photos" {
+  bucket = aws_s3_bucket.photos.id
   versioning_configuration {
     status = "Enabled"
   }
@@ -224,6 +224,6 @@ resource "aws_elastic_beanstalk_environment" "env" {
     value     = "basic"
   }
 
-  depends_on = [aws_db_instance.sql_server, aws_s3_bucket.source]
+  depends_on = [aws_db_instance.sql_server]
 }
 #endregion
