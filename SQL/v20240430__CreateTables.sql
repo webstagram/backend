@@ -8,7 +8,7 @@ CREATE TABLE [Webs] (
   [WebId] int,
   [Name] varchar(25),
   [UserId] int,
-  PRIMARY KEY ([WebId])
+  PRIMARY KEY ([WebId]),
   FOREIGN KEY ([UserId]) REFERENCES [Users]([UserId])
 );
 
@@ -33,6 +33,6 @@ CREATE TABLE [Images] (
   [ImageId] int,
   [PostId] int,
   [Path] varchar(255),
-  PRIMARY KEY ([ImageId])
+  PRIMARY KEY ([ImageId]),
   FOREIGN KEY ([PostId]) REFERENCES [Posts]([PostId])
 );
