@@ -5,7 +5,7 @@ on:
     branches:
     - main
     paths:
-    - 'api/**'
+    - 'Express/**'
   workflow_dispatch:
 
 permissions:
@@ -34,15 +34,15 @@ jobs:
 
       - name: Build
         run: npm run build
-        working-directory: api
+        working-directory: Express
 
       - name: Package artifact
         run: zip -r dist.zip dist Procfile;
-        working-directory: api
+        working-directory: Express
 
       - name: Upload artifact to S3
         run: aws s3 cp dist/dist.zip s3://${{ secrets.BUCKET_NAME }}/application-${{ github.run_id }}.zip
-        working-directory: api
+        working-directory: Express
 
   deploy:
     runs-on: ubuntu-latest
