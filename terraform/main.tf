@@ -238,7 +238,14 @@ resource "aws_elastic_beanstalk_environment" "env" {
     name      = "SystemType"
     value     = "basic"
   }
-  setting = local.environment_variable_settings
+  dynamic "setting" {
+    for_each = var.environment_variables
+    content {
+      namespace = "aws:elasticbeanstalk:application:environment"
+      name      = setting.key
+      value     = setting.value
+    }
+  }
 
   depends_on = [aws_db_instance.sql_server]
 }
