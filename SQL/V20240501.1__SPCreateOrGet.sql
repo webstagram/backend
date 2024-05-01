@@ -1,33 +1,36 @@
 CREATE PROCEDURE GetOrCreateUser
-    @Name VARCHAR(39),
-    @UserId INT OUTPUT
+    @UserName VARCHAR(25)
 AS
 BEGIN
     SET NOCOUNT ON;
+    
+    DECLARE @UserId INT;
 
-    SELECT @UserId = UserId FROM Users WHERE Name = @Name;
+    SELECT @UserId = UserId FROM Users WHERE Name = @UserName;
 
     IF @UserId IS NULL
     BEGIN
-        INSERT INTO Users (Name) OUTPUT INSERTED.UserId INTO @UserId VALUES (@Name);
+        INSERT INTO Users (Name) VALUES (@UserName);
+        SET @UserId = SCOPE_IDENTITY(); -- Get the last inserted identity value
     END
-	
+
     SELECT @UserId AS UserId;
 END
-GO
 
 CREATE PROCEDURE GetOrCreateTopic
-    @Name VARCHAR(25),
-    @TopicId INT OUTPUT
+    @TopicName VARCHAR(25)
 AS
 BEGIN
     SET NOCOUNT ON;
+    
+    DECLARE @TopicId INT;
 
-    SELECT @TopicId = TopicId FROM Topics WHERE Name = @Name;
+    SELECT @TopicId = TopicId FROM topics WHERE Name = @TopicName;
 
     IF @TopicId IS NULL
     BEGIN
-        INSERT INTO Topics (Name) OUTPUT INSERTED.TopicId INTO @TopicId VALUES (@Name);
+        INSERT INTO topics (Name) VALUES (@TopicName);
+        SET @TopicId = SCOPE_IDENTITY(); -- Get the last inserted identity value
     END
 
     SELECT @TopicId AS TopicId;
