@@ -1,7 +1,7 @@
 
 const express = require('express');
 const app = express();
-const PORT = 5000;
+const PORT = 8080;
 
 const protectedRoute = require('./Controllers/HelloWorldController');
 const loginRoute=require("./Controllers/LoginController");
