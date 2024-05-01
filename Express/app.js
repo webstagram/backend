@@ -5,7 +5,6 @@ const PORT = 5000;
 
 const protectedRoute = require('./Controllers/HelloWorldController');
 const loginRoute=require("./Controllers/LoginController");
-const sequelize=require("./models/Server");
 const corsMiddleware=require("./Middleware/corsMiddleware")
 // CORS middleware
 

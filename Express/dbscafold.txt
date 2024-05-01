@@ -1,1 +1,0 @@
-sequelize-auto -o "./models" -d Test -h localhost -u postgres -x XS4Us7b79Qcu7kodm -e postgres -p 5432
