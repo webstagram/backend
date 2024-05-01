@@ -32,8 +32,13 @@ jobs:
         with:
           node-version: 20.x
 
+      - name: Install dependencies
+        run: npm install
+        working-directory: Express
+
       - name: Package artifact
-        run: zip -r dist.zip Express Procfile;
+        run: zip -r ../dist.zip .
+        working-directory: Express
 
       - name: Upload artifact to S3
         run: aws s3 cp dist.zip s3://${{ secrets.BUCKET_NAME }}/application-${{ github.run_id }}.zip
