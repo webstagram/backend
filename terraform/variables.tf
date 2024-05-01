@@ -43,3 +43,8 @@ variable "naming_prefix" {
   type        = string
   description = "The prefix to use for naming resources."
 }
+
+variable "environment_variables" {
+  type        = map(string)
+  description = "Environment variables to set on the Elastic Beanstalk environment."
+}
