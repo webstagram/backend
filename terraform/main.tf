@@ -82,7 +82,6 @@ resource "aws_vpc_security_group_ingress_rule" "rds_sg" {
 #endregion
 
 #region Bucket
-# Create an S3 bucket with versioning to store the API source bundle
 resource "aws_s3_bucket" "photos" {
   bucket        = "${var.naming_prefix}-photo-bucket"
   force_destroy = true
@@ -94,6 +93,22 @@ resource "aws_s3_bucket_versioning" "photos" {
   versioning_configuration {
     status = "Enabled"
   }
+}
+
+resource "aws_s3_bucket_public_access_block" "photos" {
+  bucket = aws_s3_bucket.photos.bucket
+
+  block_public_acls       = false
+  block_public_policy     = false
+  ignore_public_acls      = false
+  restrict_public_buckets = false
+}
+
+resource "aws_s3_bucket_policy" "bucket-policy" {
+  bucket = aws_s3_bucket.photos.bucket
+  policy = data.aws_iam_policy_document.bucket-policy.json
+
+  depends_on = [aws_s3_bucket_public_access_block.photos]
 }
 #endregion
 
