@@ -37,7 +37,6 @@ jobs:
 
       - name: Upload artifact to S3
         run: aws s3 cp dist.zip s3://${{ secrets.BUCKET_NAME }}/application-${{ github.run_id }}.zip
-        working-directory: Express
 
   deploy:
     runs-on: ubuntu-latest
