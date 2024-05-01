@@ -1,19 +1,36 @@
 const sql = require('mssql');
 const sqlConfig = require('../Database/DbInit');
 
-async function getOrCreatetUserId(username){
-    try{
-        await sql.connect(sqlConfig);
-        let result= await sql.query`SELECT * FROM USERS`;
-        return result.recordset;
+async function getOrCreateUserId(name) {
+    try {
+      // Make sure to connect to the database before calling the stored procedure
+      await sql.connect(sqlConfig);
+  
+      // Create a new request
+      const request = new sql.Request();
+  
+      // Add input parameter
+      request.input('Name', sql.VarChar, name);
+  
+      // Add output parameter
+      request.output('UserId', sql.Int);
+  
+      // Execute the stored procedure
+      await request.execute('GetOrCreateUser');
+  
+      // Get the output parameter value
+      const userId = request.parameters.UserId.value;
+      return userId;
+    } catch (err) {
+      console.error('Error running stored procedure', err);
+      throw err; // Rethrow the error for the caller to handle
     }
-    catch{
-    console.error('Error running query', err);
-    throw err; // Rethrow the error for the caller to handle
-    }
-}
+  }
+  
 
-(async () => {
-    let userId = await getOrCreatetUserId("fred");
-    console.log(userId);
-})();
+// (async () => {
+//     let userId = await getOrCreatetUserId("fred");
+//     console.log(userId);
+// })();
+
+module.exports={getOrCreateUserId}
