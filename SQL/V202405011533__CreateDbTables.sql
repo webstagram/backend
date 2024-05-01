@@ -1,18 +1,3 @@
-IF OBJECT_ID('dbo.Images', 'U') IS NOT NULL
-  DROP TABLE dbo.Images;
-
-IF OBJECT_ID('dbo.Posts', 'U') IS NOT NULL
-  DROP TABLE dbo.Posts;
-
-IF OBJECT_ID('dbo.Topics', 'U') IS NOT NULL
-  DROP TABLE dbo.Topics;
-
-IF OBJECT_ID('dbo.Webs', 'U') IS NOT NULL
-  DROP TABLE dbo.Webs;
-
-IF OBJECT_ID('dbo.Users', 'U') IS NOT NULL
-  DROP TABLE dbo.Users;
-
 CREATE TABLE [Users] (
   [UserId] INT IDENTITY(1,1) PRIMARY KEY,
   [Name] VARCHAR(39)
