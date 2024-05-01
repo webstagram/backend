@@ -32,10 +32,6 @@ jobs:
         with:
           node-version: 20.x
 
-      - name: Build
-        run: npm run build
-        working-directory: Express
-
       - name: Package artifact
         run: zip -r dist.zip dist Procfile;
         working-directory: Express
