@@ -10,16 +10,13 @@ async function getOrCreateUserId(name) {
       const request = new sql.Request();
   
       // Add input parameter
-      request.input('Name', sql.VarChar, name);
+      request.input('UserName', sql.VarChar, name);
   
       // Add output parameter
-      request.output('UserId', sql.Int);
-  
       // Execute the stored procedure
-      await request.execute('GetOrCreateUser');
-  
+      const result=await request.execute('GetOrCreateUser');
       // Get the output parameter value
-      const userId = request.parameters.UserId.value;
+      const userId = result.recordset[0].UserId;
       return userId;
     } catch (err) {
       console.error('Error running stored procedure', err);
