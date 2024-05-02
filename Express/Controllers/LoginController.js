@@ -39,14 +39,17 @@ router.get('/github/callback', (request, result) => {
 
             }
             else {
-                const userID=await getOrCreateUserId(res.login);
+                var url=res.avatar_url;
+
+                const userID=await getOrCreateUserId(res.login,url);
                
 
                 let token;
                 try {
                     token = jwt.sign({ 
                         userID: userID,
-                        userName: res.login },
+                        userName: res.login,
+                     userImage: url},
                         JWT_SECRET_KEY,
                         { expiresIn: "1h" });
                 }
