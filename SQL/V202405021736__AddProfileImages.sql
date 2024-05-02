@@ -1,9 +1,9 @@
 ALTER TABLE users
-ADD ProfileImageUrl VARCHAR(255);
-GO;
+ADD ProfileImageUrl VARCHAR(255)
+GO
 
-DROP PROCEDURE IF EXISTS GetOrCreateUser;
-GO;
+DROP PROCEDURE IF EXISTS GetOrCreateUser
+GO
 
 CREATE PROCEDURE GetOrCreateUser
     @UserName VARCHAR(39),
