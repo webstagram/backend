@@ -24,10 +24,4 @@ async function getOrCreateUserId(name) {
     }
   }
   
-
-// (async () => {
-//     let userId = await getOrCreatetUserId("fred");
-//     console.log(userId);
-// })();
-
 module.exports={getOrCreateUserId}
