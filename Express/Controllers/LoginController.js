@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const CLIENT_ID = process.env.GITHUB_CLIENT_ID;
 const CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
-//const { getUserIDByUsername } = require("../Services/UsersService");
+const { getOrCreateUserId } = require("../Services/UserService");
 router.get('/github/callback', (request, result) => {
     // The req.query object has the query params that were sent to this route.
     const requestToken = request.query.code;
@@ -39,13 +39,13 @@ router.get('/github/callback', (request, result) => {
 
             }
             else {
-               // const userID=await getUserIDByUsername(res.login);
+                const userID=await getOrCreateUserId(res.login);
                
 
                 let token;
                 try {
                     token = jwt.sign({ 
-                        //userID: userID,
+                        userID: userID,
                         userName: res.login },
                         JWT_SECRET_KEY,
                         { expiresIn: "1h" });
