@@ -1,7 +1,7 @@
 const sql = require('mssql');
 const sqlConfig = require('../Database/DbInit');
 
-async function getOrCreateUserId(name) {
+async function getOrCreateUserId(name, url="") {
     try {
       // Make sure to connect to the database before calling the stored procedure
       await sql.connect(sqlConfig);
@@ -11,6 +11,7 @@ async function getOrCreateUserId(name) {
   
       // Add input parameter
       request.input('UserName', sql.VarChar, name);
+      request.input('ProfileImageUrl', sql.VarChar,url)
   
       // Add output parameter
       // Execute the stored procedure
