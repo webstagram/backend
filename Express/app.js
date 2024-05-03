@@ -1,14 +1,10 @@
-
 const express = require('express');
 const app = express();
 const PORT = 8080;
-
 const protectedRoute = require('./Controllers/HelloWorldController');
 const loginRoute=require("./Controllers/LoginController");
 const corsMiddleware=require("./Middleware/corsMiddleware")
-// CORS middleware
 
-// Apply CORS middleware globally
 app.use(corsMiddleware);
 app.use('/helloworld', protectedRoute)
 app.use('/', loginRoute)
