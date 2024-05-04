@@ -8,6 +8,14 @@ const protectedRoute = require('./Controllers/HelloWorldController');
 const loginRoute=require("./Controllers/LoginController");
 app.use(bodyParser.json());
 
+const AWS = require('aws-sdk');
+AWS.config.update({
+  region: 'eu-west-1',
+  // accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  // secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+});
+const s3 = new AWS.S3();
+
 const corsMiddleware=require("./Middleware/corsMiddleware")
 // CORS middleware
 
@@ -27,12 +35,13 @@ var successfulUpload=true;
     Body: req.body.fileContent
   }
   console.log(sendingThisToS3);
-
-  if (successfulUpload){
-    res.status(200).json({ message: `Image uploaded successfully` });
-  } else {
-    res.status(400).json({ message: `Error in uploading image!` });
-  }
+  s3.upload(sendingThisToS3, (err, data) => {
+    if (err){
+      res.status(400).json({ message: `Error in uploading image: ${err}` });
+    } else {
+      res.status(200).json({ message: `Image uploaded successfully` });
+    }
+  })
 });
 
 
