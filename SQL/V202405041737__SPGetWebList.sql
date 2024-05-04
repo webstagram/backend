@@ -7,6 +7,7 @@ BEGIN
         w.WebId,
         w.[Name] as WebName,
         u.[Name] as UserName,
+		u.ProfileImageUrl,
         MAX(p.TimeCreated) AS MostRecentPost,
         STRING_AGG(t.[Name], ', ') WITHIN GROUP (ORDER BY t.[Name]) AS Topics
     FROM 
@@ -18,7 +19,7 @@ BEGIN
     LEFT JOIN 
         Topics t ON p.TopicId = t.TopicId
     GROUP BY 
-        w.WebId, w.[Name], u.[Name]
+        w.WebId, w.[Name], u.[Name], u.ProfileImageUrl
     ORDER BY 
         MostRecentPost DESC;
 END;
