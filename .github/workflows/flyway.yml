@@ -1,14 +1,14 @@
 name: "FlywayWorkflow"
  
 on:
-  
   pull_request:
     types:
       - closed
     branches:
       - main
-      
- 
+    paths:
+      - 'SQL/**'
+
 jobs:
   Migrate:
     if: github.event.pull_request.merged == true
