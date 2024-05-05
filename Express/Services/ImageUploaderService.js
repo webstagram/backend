@@ -15,20 +15,21 @@ const s3 = new AWS.S3();
 function uploadimage(image64, contentType, extension){
   const imageBuffer=Buffer.from(image64,'base64');
   const key=randomUUID();
+  const result = key+extension;
   var sendingThisToS3 = {
     Bucket: 'webstagram-backend-photo-bucket',
-    Key: key+extension,
+    Key: result,
     Body: imageBuffer,
     ContentType: contentType
   }
-  console.log(sendingThisToS3);
   s3.upload(sendingThisToS3, (err, data) => {
     if (err){
     throw(err)
     } else {
-     return key+extension;
+     return result;
     }
   })
+  return result;
 }
 
 async function uploadPosts(userId, webName, posts){
@@ -66,14 +67,21 @@ async function uploadPosts(userId, webName, posts){
 
       // Add the post to the Db:
       query = `INSERT INTO Posts OUTPUT inserted.PostId VALUES (\'${post.Caption}\', ${topicId}, \'${new Date().toLocaleString('lt-LT')}\', ${webId})`;
-      console.log(query);
       request = new sql.Request();
       var postId = (await request.query(query)).recordset[0].PostId;
-      console.log(postId);
+
+      // Idd images to S3 and return the path:
+      for (var image of post.Images){
+        var fileName = uploadimage(image.FileContent, image.ContentType, image.Extension);
+        var imagePath = "https://webstagram-backend-photo-bucket.s3.eu-west-1.amazonaws.com/"+fileName;
+        query = `INSERT INTO Images VALUES (${postId}, \'${imagePath}\')`;
+        request = new sql.Request();
+        queryResult = (await request.query(query));
+      }
     }
     return 1;// result;
   } catch (err) {
-    console.error('Error running stored procedure', err);
+    console.error('Error uploading web/images/posts', err);
     throw err; 
   }
 }

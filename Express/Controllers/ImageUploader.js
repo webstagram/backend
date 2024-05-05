@@ -1,8 +1,9 @@
 const express = require('express');
 const { uploadPosts } = require('../Services/ImageUploaderService');
+const verifyToken = require('../Middleware/authMiddleware');
 const router = express.Router();
 
-router.post('/uploadposts', (req, res) => {
+router.post('/uploadposts', verifyToken, (req, res) => {
 
     try { 
         var userId = req.body.UserId;
