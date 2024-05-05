@@ -15,8 +15,14 @@ router.get('/', verifyToken, async (request, result) => {
 router.get('/postsinweb', async (request, result)=>{
     try{
         var inputtedId = parseInt(request.query.webId);
+        if (inputtedId != request.query.webId){
+            result.status(400);
+            result.set('Content-Type', 'application/text');
+            result.send("Web ID Provided is not valid");
+            return;
+        }
+        
         var webPosts = await getWebPosts(inputtedId);
-
         result.status(200);
         result.set('Content-Type', 'application/json');
         result.send(webPosts);
