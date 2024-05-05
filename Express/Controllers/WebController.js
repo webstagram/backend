@@ -12,7 +12,7 @@ router.get('/', verifyToken, async (request, result) => {
     }
 });
 
-router.get('/postsinweb', async (request, result)=>{
+router.get('/postsinweb', verifyToken, async (request, result)=>{
     try{
         var inputtedId = parseInt(request.query.webId);
         if (inputtedId != request.query.webId){
