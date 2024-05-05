@@ -26,9 +26,13 @@ async function getWebsWithTopics(name, url="") {
       const request = new sql.Request();
       // DESC will give the latest first
       var posts = (await request.query(`SELECT * FROM Posts WHERE WebId=${webId} ORDER BY TimeCreated DESC`)).recordset;
+      
       for (var post of posts){
         const thisPostImages = (await request.query(`SELECT Path FROM Images WHERE PostId=(${post.PostId})`)).recordset;
         post.PostImages = thisPostImages;
+
+        const thisPostTopic = (await request.query(`SELECT Name FROM Topics WHERE TopicId=(${post.TopicId})`)).recordset;
+        post.Topic = thisPostTopic[0].Name;
       }
       return posts;
     } catch (err) {
