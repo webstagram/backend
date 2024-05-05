@@ -29,3 +29,9 @@ app.listen(PORT, (error) => {
     console.log("Error occurred, server can't start", error);
 }
 );
+
+app.get('/healthcheck', (request, result) => {
+  result.status(200);
+  result.set('Content-Type', 'text/html');
+  result.send("<h1>Health Good</h1>");
+});
