@@ -1,12 +1,14 @@
-
 const express = require('express');
-const { uploadimage } = require('../Services/ImageUploaderService');
+const { uploadPosts } = require('../Services/ImageUploaderService');
 const router = express.Router();
 
-router.post('/uploadimage', (req, res) => {
+router.post('/uploadposts', (req, res) => {
 
     try { 
-        var guid=uploadimage(req.body.fileContent, req.body.contentType, req.body.extension);
+        var userId = req.body.UserId;
+        var webName = req.body.WebName;
+        var posts = req.body.Posts;
+        var guid=uploadPosts(userId, webName, posts);
         res.status(200).send("good");
     } catch (error) {
         res.set(400).send(error)

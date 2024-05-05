@@ -18,10 +18,6 @@ app.get('/healthcheck', (request, result) => {
   result.send("<h1>Health Good</h1>");
 });
 
-
-
-
-
 app.use('/helloworld', protectedRoute)
 app.use('/', loginRoute)
 app.use('/', imageRoute)
