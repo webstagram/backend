@@ -23,4 +23,3 @@ app.get('/healthcheck', (request, result) => {
   result.set('Content-Type', 'text/html');
   result.send("<h1>Health Good</h1>");
 });
-
