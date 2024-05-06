@@ -3,7 +3,7 @@ const { getOrCreateUserId } = require("../Services/UserService");
 const CLIENT_ID = process.env.GITHUB_CLIENT_ID;
 const CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
-const REFRESH_SECRET_KEY = process.env.Refresh_Secret_key;
+const REFRESH_SECRET_KEY = process.env.REFRESH_SECRET_KEY;
 
 async function authAndReturnJWT(requestToken) {
     try {

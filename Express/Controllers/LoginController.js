@@ -18,7 +18,7 @@ router.get('/refresh',(request, result) => {
         const userData = refreshJWT(refreshToken);
          result.json(userData);
     } catch (error) {
-        result.status(400).send(error.message);
+        result.status(401).send(error.message);
     }
 })
 
