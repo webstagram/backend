@@ -12,7 +12,11 @@ router.post('/uploadposts', verifyToken, (req, res) => {
         var guid=uploadPosts(userId, webName, posts);
         res.status(200).send("good");
     } catch (error) {
+        if (error){
         res.set(400).send(error)
+        } else {
+            res.set(400).send({"Message": "Error in uploading post/web"});
+        }
     }
 });
 
