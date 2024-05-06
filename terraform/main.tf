@@ -238,6 +238,11 @@ resource "aws_elastic_beanstalk_environment" "env" {
     name      = "SystemType"
     value     = "basic"
   }
+  setting {
+    namespace = "aws:elasticbeanstalk:application"
+    name      = "Application Healthcheck URL"
+    value     = "/healthcheck"
+  }
   dynamic "setting" {
     for_each = var.environment_variables
     content {
