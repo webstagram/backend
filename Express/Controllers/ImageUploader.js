@@ -9,7 +9,11 @@ router.post('/uploadposts', verifyToken, (req, res) => {
         var userId = res.userID;
         var webName = req.body.WebName;
         var posts = req.body.Posts;
-        var guid=uploadPosts(userId, webName, posts);
+        console.log(req);
+        console.log(userId);
+        console.log(webName);
+        console.log(posts);
+        // var guid=uploadPosts(userId, webName, posts);
         res.status(200).send("good");
     } catch (error) {
         if (error){
