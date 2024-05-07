@@ -10,7 +10,7 @@ const corsMiddleware=require("./Middleware/corsMiddleware");
 app.use(corsMiddleware);
 
 // for parsing application/json
-app.use(express.json()); 
+app.use(express.json({ limit: '30mb' })); 
 
 app.get('/healthcheck', (request, result) => {
   result.status(200);
