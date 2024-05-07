@@ -44,6 +44,11 @@ async function uploadPosts(userId, webName, posts){
       request = new sql.Request();
       queryResult = (await request.query(query)).recordset;
     }
+    else {
+
+      throw("Web with this name already exists");
+
+    }
     var  webId = queryResult[0].WebId;
     
     // Add the posts and the images to the Web
