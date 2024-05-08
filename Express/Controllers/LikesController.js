@@ -5,8 +5,8 @@ const {getLikeCount, getLikeStatus, likeWeb, unlikeWeb} = require("../Services/L
 
 router.get('/weblikecount', verifyToken, async (request, result)=>{
   try{
-    let webId = parseInt(request.body.webId);
-    if (webId != request.body.webId){
+    let webId = parseInt(request.query.webId);
+    if (webId != request.query.webId){
       result.status(400);
       result.set('Content-Type', 'application/text');
       result.send("Web ID Provided is not valid");
@@ -26,9 +26,9 @@ router.get('/weblikecount', verifyToken, async (request, result)=>{
 
 router.get('/likestatus', verifyToken, async (request, result)=>{
   try{
-    let webId = parseInt(request.body.webId);
+    let webId = parseInt(request.query.webId);
     let userId = result.userID;
-    if (webId != request.body.webId){
+    if (webId != request.query.webId){
       result.status(400);
       result.set('Content-Type', 'application/text');
       result.send("ID Provided is not valid");
