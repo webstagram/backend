@@ -27,8 +27,8 @@ router.get('/weblikecount', verifyToken, async (request, result)=>{
 router.get('/likestatus', verifyToken, async (request, result)=>{
   try{
     let webId = parseInt(request.query.webId);
-    let userId = parseInt(request.query.userId);
-    if (webId != request.query.webId || userId != request.query.userId){
+    let userId = result.userID;
+    if (webId != request.query.webId){
       result.status(400);
       result.set('Content-Type', 'application/text');
       result.send("ID Provided is not valid");
@@ -49,8 +49,8 @@ router.get('/likestatus', verifyToken, async (request, result)=>{
 router.post('/like', verifyToken, async (request, result)=>{
   try{
     let webId = parseInt(request.query.webId);
-    let userId = parseInt(request.query.userId);
-    if (webId != request.query.webId || userId != request.query.userId){
+    let userId = result.userID;
+    if (webId != request.query.webId){
       result.status(400);
       result.set('Content-Type', 'application/text');
       result.send("ID Provided is not valid");
@@ -71,7 +71,7 @@ router.post('/like', verifyToken, async (request, result)=>{
 router.post('/unlike', verifyToken, async (request, result)=>{
   try{
     let webId = parseInt(request.query.webId);
-    let userId = parseInt(request.query.userId);
+    let userId = result.userID;
     if (webId != request.query.webId || userId != request.query.userId){
       result.status(400);
       result.set('Content-Type', 'application/text');
