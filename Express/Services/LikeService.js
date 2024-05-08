@@ -40,7 +40,7 @@ async function likeWeb(webId, userId){
   }
   try {
     const checkLiked = await getLikeStatus(webId, userId);
-    if (checkLiked.recordset[0].LikeCount > 0) {
+    if (checkLiked > 0) {
       throw new Error("User has already liked this web");
     }
     await sql.connect(sqlConfig);
@@ -60,7 +60,7 @@ async function unlikeWeb(webId, userId){
   }
   try {
     const checkLiked = await getLikeStatus(webId, userId);
-    if (checkLiked.recordset[0].LikeCount == 0) {
+    if (checkLiked == 0) {
       throw new Error("User has not liked this web");
     }
     await sql.connect(sqlConfig);
