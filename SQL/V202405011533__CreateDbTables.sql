@@ -7,7 +7,7 @@ CREATE TABLE [Webs] (
   [WebId] INT IDENTITY(1,1) PRIMARY KEY,
   [Name] VARCHAR(25),
   [UserId] INT,
-  FOREIGN KEY ([UserId]) REFERENCES Users
+  FOREIGN KEY ([UserId]) REFERENCES Users([UserId])
 );
 
 CREATE TABLE [Topics] (
