@@ -71,7 +71,7 @@ async function uploadPosts(userId, webName, posts){
       var topicId = queryResult[0].TopicId;
 
       // Add the post to the Db:
-      query = `INSERT INTO Posts OUTPUT inserted.PostId VALUES (\'${post.Caption}\', ${topicId}, \'${new Date().toLocaleString('lt-LT')}\', ${webId})`;
+      query = `INSERT INTO Posts (Caption, TopicId, WebId) OUTPUT inserted.PostId VALUES (\'${post.Caption}\', ${topicId}, ${webId})`;
       request = new sql.Request();
       var postId = (await request.query(query)).recordset[0].PostId;
 
