@@ -32,23 +32,19 @@ function uploadimage(image64, contentType, extension){
   return result;
 }
 
+function fixApostropheIssue(str){
+  var ans = str.replace(/'/g, "''");
+  return ans;
+}
+
 async function uploadPosts(userId, webName, posts){
   try {
     await sql.connect(sqlConfig);
     // See if the web exists
-    var request = new sql.Request();
-    var queryResult = (await request.query(`SELECT WebId FROM Webs WHERE [Name]=\'${webName}\' AND UserId=${userId}`)).recordset;
-    // var webId = 0;
-    if (queryResult.length==0){
-      var query = `INSERT INTO Webs OUTPUT inserted.WebId VALUES (\'${webName}\', ${userId})`;
-      request = new sql.Request();
-      queryResult = (await request.query(query)).recordset;
-    }
-    else {
-
-      throw("Web with this name already exists");
-
-    }
+    webName = fixApostropheIssue(webName);
+    var query = `INSERT INTO Webs OUTPUT inserted.WebId VALUES (\'${webName}\', ${userId})`;
+    request = new sql.Request();
+    queryResult = (await request.query(query)).recordset;
     var  webId = queryResult[0].WebId;
     
     // Add the posts and the images to the Web
@@ -57,8 +53,10 @@ async function uploadPosts(userId, webName, posts){
     // Add images to DB
     // Add images to S3
     // Add posts to the web
+
     for (var post of posts){
       var topic = post.Topic;
+      topic = fixApostropheIssue(topic);
       // See if topic exists
       var query = `SELECT TopicId From Topics WHERE [Name]=\'${topic}\'`;
       request = new sql.Request();
@@ -71,7 +69,8 @@ async function uploadPosts(userId, webName, posts){
       var topicId = queryResult[0].TopicId;
 
       // Add the post to the Db:
-      query = `INSERT INTO Posts OUTPUT inserted.PostId VALUES (\'${post.Caption}\', ${topicId}, \'${new Date().toLocaleString('lt-LT')}\', ${webId})`;
+      var postCaption = fixApostropheIssue(post.Caption);
+      query = `INSERT INTO Posts OUTPUT inserted.PostId VALUES (\'${postCaption}\', ${topicId}, \'${new Date().toLocaleString('lt-LT')}\', ${webId})`;
       request = new sql.Request();
       var postId = (await request.query(query)).recordset[0].PostId;
 
@@ -79,6 +78,7 @@ async function uploadPosts(userId, webName, posts){
       for (var image of post.Images){
         var fileName = uploadimage(image.FileContent, image.ContentType, image.Extension);
         var imagePath = "https://webstagram-backend-photo-bucket.s3.eu-west-1.amazonaws.com/"+fileName;
+        imagePath = fixApostropheIssue(imagePath);
         query = `INSERT INTO Images VALUES (${postId}, \'${imagePath}\')`;
         request = new sql.Request();
         queryResult = (await request.query(query));
