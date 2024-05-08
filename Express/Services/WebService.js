@@ -16,6 +16,22 @@ async function getWebsWithTopics(name, url="") {
     }
   }
 
+  async function getWebTitle(webId, url=""){
+    if (!(Number.isInteger(webId))){
+      var err = "webId is not an integer";
+      throw(err);
+    }
+    try {
+      await sql.connect(sqlConfig);
+      const request = new sql.Request();
+      const result = await request.query(`SELECT Name FROM Webs WHERE WebId=${webId}`);
+      return result.recordset[0].Name;
+    } catch (err) {
+      console.error('Error getting web title', err);
+      throw err; 
+    }
+  }
+
   async function getWebPosts(webId, url=""){
     if (!(Number.isInteger(webId))){
       var err = "webId is not an integer";
@@ -41,4 +57,4 @@ async function getWebsWithTopics(name, url="") {
     }
   }
   
-module.exports={getWebsWithTopics, getWebPosts};
+module.exports={getWebsWithTopics, getWebTitle, getWebPosts};
