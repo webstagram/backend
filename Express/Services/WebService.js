@@ -19,7 +19,7 @@ async function getWebsWithTopics(userIdParam) {
 
   async function getWebTitle(webId, url=""){
     if (!(Number.isInteger(webId))){
-      var err = "webId is not an integer";
+      let err = "webId is not an integer";
       throw(err);
     }
     try {
@@ -35,16 +35,16 @@ async function getWebsWithTopics(userIdParam) {
 
   async function getWebPosts(webId, url=""){
     if (!(Number.isInteger(webId))){
-      var err = "webId is not an integer";
+      let err = "webId is not an integer";
       throw(err);
     }
     try {
       await sql.connect(sqlConfig);
       const request = new sql.Request();
       // DESC will give the latest first
-      var posts = (await request.query(`SELECT * FROM Posts WHERE WebId=${webId} ORDER BY TimeCreated DESC`)).recordset;
+      let posts = (await request.query(`SELECT * FROM Posts WHERE WebId=${webId} ORDER BY TimeCreated DESC`)).recordset;
       
-      for (var post of posts){
+      for (let post of posts){
         const thisPostImages = (await request.query(`SELECT Path FROM Images WHERE PostId=(${post.PostId})`)).recordset;
         post.PostImages = thisPostImages;
 

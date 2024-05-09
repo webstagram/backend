@@ -3,7 +3,7 @@ const sqlConfig = require('../Database/DbInit');
 
 async function getLikeCount(webId){
     if (!(Number.isInteger(webId))){
-        var err = "webId is not an integer";
+        let err = "webId is not an integer";
         throw(err);
     }
     try {
@@ -19,7 +19,7 @@ async function getLikeCount(webId){
 
 async function getLikeStatus(webId, userId){
     if (!(Number.isInteger(webId)) || !(Number.isInteger(userId))){
-        var err = "webId or userId is not an integer";
+        let err = "webId or userId is not an integer";
         throw(err);
     }
     try {
@@ -35,7 +35,7 @@ async function getLikeStatus(webId, userId){
 
 async function likeWeb(webId, userId){
   if (!(Number.isInteger(webId)) || !(Number.isInteger(userId))){
-    var err = "webId or userId is not an integer";
+    let err = "webId or userId is not an integer";
     throw(err);
   }
   try {
@@ -55,7 +55,7 @@ async function likeWeb(webId, userId){
 
 async function unlikeWeb(webId, userId){
   if (!(Number.isInteger(webId)) || !(Number.isInteger(userId))){
-    var err = "webId or userId is not an integer";
+    let err = "webId or userId is not an integer";
     throw(err);
   }
   try {
