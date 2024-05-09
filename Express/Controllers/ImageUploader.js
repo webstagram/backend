@@ -6,10 +6,10 @@ const router = express.Router();
 router.post('/uploadposts', verifyToken, async (req, res) => {
 
     try { 
-        var userId = res.userID;
-        var webName = req.body.WebName;
-        var posts = req.body.Posts;
-        var guid=await uploadPosts(userId, webName, posts);
+        let userId = res.userID;
+        let webName = req.body.WebName;
+        let posts = req.body.Posts;
+        let guid=await uploadPosts(userId, webName, posts);
         res.status(200).send("good");
     } catch (error) {
         if (error){

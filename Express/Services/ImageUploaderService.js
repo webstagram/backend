@@ -16,7 +16,7 @@ function uploadimage(image64, contentType, extension){
   const imageBuffer=Buffer.from(image64,'base64');
   const key=randomUUID();
   const result = key+extension;
-  var sendingThisToS3 = {
+  let sendingThisToS3 = {
     Bucket: 'webstagram-backend-photo-bucket',
     Key: result,
     Body: imageBuffer,
@@ -33,7 +33,7 @@ function uploadimage(image64, contentType, extension){
 }
 
 function fixApostropheIssue(str){
-  var ans = str.replace(/'/g, "''");
+  let ans = str.replace(/'/g, "''");
   return ans;
 }
 
@@ -42,10 +42,10 @@ async function uploadPosts(userId, webName, posts){
     await sql.connect(sqlConfig);
     // See if the web exists
     webName = fixApostropheIssue(webName);
-    var query = `INSERT INTO Webs OUTPUT inserted.WebId VALUES (\'${webName}\', ${userId})`;
+    let query = `INSERT INTO Webs OUTPUT inserted.WebId VALUES (\'${webName}\', ${userId})`;
     request = new sql.Request();
     queryResult = (await request.query(query)).recordset;
-    var  webId = queryResult[0].WebId;
+    let  webId = queryResult[0].WebId;
     
     // Add the posts and the images to the Web
     // Get TopicId
@@ -54,30 +54,30 @@ async function uploadPosts(userId, webName, posts){
     // Add images to S3
     // Add posts to the web
 
-    for (var post of posts){
-      var topic = post.Topic;
+    for (let post of posts){
+      let topic = post.Topic;
       topic = fixApostropheIssue(topic);
       // See if topic exists
-      var query = `SELECT TopicId From Topics WHERE [Name]=\'${topic}\'`;
+      let query = `SELECT TopicId From Topics WHERE [Name]=\'${topic}\'`;
       request = new sql.Request();
       queryResult = (await request.query(query)).recordset;
       if (queryResult.length==0){// If topic no existo, addo topico
-        var query = `INSERT INTO Topics OUTPUT inserted.TopicId VALUES (\'${topic}\')`;
+        let query = `INSERT INTO Topics OUTPUT inserted.TopicId VALUES (\'${topic}\')`;
         request = new sql.Request();
         queryResult = (await request.query(query)).recordset;
       }
-      var topicId = queryResult[0].TopicId;
+      let topicId = queryResult[0].TopicId;
 
       // Add the post to the Db:
-      var postCaption = fixApostropheIssue(post.Caption);
+      let postCaption = fixApostropheIssue(post.Caption);
       query = `INSERT INTO Posts (Caption, TopicId, WebId) OUTPUT inserted.PostId VALUES (\'${postCaption}\', ${topicId}, ${webId})`;
       request = new sql.Request();
-      var postId = (await request.query(query)).recordset[0].PostId;
+      let postId = (await request.query(query)).recordset[0].PostId;
 
       // Idd images to S3 and return the path:
-      for (var image of post.Images){
-        var fileName = uploadimage(image.FileContent, image.ContentType, image.Extension);
-        var imagePath = "https://webstagram-backend-photo-bucket.s3.eu-west-1.amazonaws.com/"+fileName;
+      for (let image of post.Images){
+        let fileName = uploadimage(image.FileContent, image.ContentType, image.Extension);
+        let imagePath = "https://webstagram-backend-photo-bucket.s3.eu-west-1.amazonaws.com/"+fileName;
         imagePath = fixApostropheIssue(imagePath);
         query = `INSERT INTO Images VALUES (${postId}, \'${imagePath}\')`;
         request = new sql.Request();

@@ -14,15 +14,15 @@ router.get('/', verifyToken, async (request, result) => {
 
 router.get('/postsinweb', verifyToken, async (request, result)=>{
     try{
-        var inputtedId = parseInt(request.query.webId);
+        let inputtedId = parseInt(request.query.webId);
         if (inputtedId != request.query.webId){
             result.status(400);
             result.set('Content-Type', 'application/text');
             result.send("Web ID Provided is not valid");
             return;
         }
-        var webTitle = await getWebTitle(inputtedId);
-        var webPosts = await getWebPosts(inputtedId);
+        let webTitle = await getWebTitle(inputtedId);
+        let webPosts = await getWebPosts(inputtedId);
         result.status(200);
         result.set('Content-Type', 'application/json');
         result.send({ webTitle, webPosts });
