@@ -5,6 +5,7 @@ const protectedRoute = require('./Controllers/HelloWorldController');
 const loginRoute=require("./Controllers/LoginController");
 const webRoute=require("./Controllers/WebController");
 const imageRoute=require("./Controllers/ImageUploader");
+const likesRoute=require("./Controllers/LikesController");
 const corsMiddleware=require("./Middleware/corsMiddleware");
 
 app.use(corsMiddleware);
@@ -21,6 +22,7 @@ app.get('/healthcheck', (request, result) => {
 app.use('/helloworld', protectedRoute)
 app.use('/', loginRoute)
 app.use('/', imageRoute)
+app.use('/', likesRoute)
 app.use('/webs', webRoute);
 app.listen(PORT, (error) => {
   if (!error)
