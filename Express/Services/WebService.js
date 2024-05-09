@@ -25,8 +25,13 @@ async function getWebsWithTopics(userIdParam) {
     try {
       await sql.connect(sqlConfig);
       const request = new sql.Request();
-      const result = await request.query(`SELECT Name FROM Webs WHERE WebId=${webId}`);
-      return result.recordset[0].Name;
+      const webName = (await request.query(`SELECT Name FROM Webs WHERE WebId=${webId}`)).recordset[0].Name;
+      const userData= (await request.query(`SELECT u.Name, u.ProfileImageUrl
+      FROM users u
+      JOIN webs w ON u.userID = w.userID
+      WHERE w.webID = ${webId};`)).recordset[0];
+      const result = {webName: webName, userData: userData};
+      return result;
     } catch (err) {
       console.error('Error getting web title', err);
       throw err; 
@@ -51,10 +56,6 @@ async function getWebsWithTopics(userIdParam) {
         const thisPostTopic = (await request.query(`SELECT Name FROM Topics WHERE TopicId=(${post.TopicId})`)).recordset;
         post.Topic = thisPostTopic[0].Name;
       }
-      posts.userData= (await request.query(`SELECT u.Name, u.ProfileImageUrl
-      FROM users u
-      JOIN webs w ON u.userID = w.userID
-      WHERE w.webID = ${webId};`)).recordset;
       return posts;
     } catch (err) {
       console.error('Error getting posts', err);
