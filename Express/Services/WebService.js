@@ -51,6 +51,10 @@ async function getWebsWithTopics(userIdParam) {
         const thisPostTopic = (await request.query(`SELECT Name FROM Topics WHERE TopicId=(${post.TopicId})`)).recordset;
         post.Topic = thisPostTopic[0].Name;
       }
+      posts.userData= (await request.query(`SELECT u.Name, u.ProfileImageUrl
+      FROM users u
+      JOIN webs w ON u.userID = w.userID
+      WHERE w.webID = ${webId};`)).recordset;
       return posts;
     } catch (err) {
       console.error('Error getting posts', err);
