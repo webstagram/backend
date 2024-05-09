@@ -1,11 +1,12 @@
 const sql = require('mssql');
 const sqlConfig = require('../Database/DbInit');
 
-async function getWebsWithTopics(name, url="") {
+async function getWebsWithTopics(userIdParam) {
     try {
       await sql.connect(sqlConfig);
 
       const request = new sql.Request();
+      request.input('userIdParam', sql.Int, userIdParam);
       const result=await request.execute('GetWebsWithTopics');
 
       const userId = result.recordset;
