@@ -28,7 +28,6 @@ async function getWebsWithTopics(userIdParam) {
       const result = await request.query(`SELECT Name FROM Webs WHERE WebId=${webId}`);
       return result.recordset[0].Name;
     } catch (err) {
-      console.error('Error getting web title', err);
       throw err; 
     }
   }
