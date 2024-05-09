@@ -6,7 +6,7 @@ const {getWebsWithTopics, getWebTitle, getWebPosts} = require("../Services/WebSe
 router.get('/', verifyToken, async (request, result) => {
     try {
         const userData = await getWebsWithTopics(result.userID);
-         result.json(userData);
+        result.json(userData);
     } catch (error) {
         result.status(400).send(error.message);
     }
