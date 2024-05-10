@@ -19,5 +19,19 @@ async function getOrCreateUserId(name, url="") {
       throw err; 
     }
   }
+
+async function getAllUsers() {
+  try {
+    await sql.connect(sqlConfig);
+
+    const request = new sql.Request();
+    const result = (await request.query('SELECT name FROM USERS')).recordset.map((obj) => obj.name);
+    
+    return result;
+  } catch (error) {
+    console.err('Error getting all users', err);
+    throw err;
+  }
+}
   
-module.exports={getOrCreateUserId};
+module.exports={getOrCreateUserId, getAllUsers};
