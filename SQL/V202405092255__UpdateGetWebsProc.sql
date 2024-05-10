@@ -22,7 +22,7 @@ BEGIN
 			MAX(p.TimeCreated) AS MostRecentPost,
 			STRING_AGG(t.[Name], ', ') WITHIN GROUP (ORDER BY t.[Name]) AS Topics,
 			COALESCE(lc.LikeCount, 0) AS LikeCount,
-			CASE WHEN MAX(l2.UserId) = 3 THEN 1 ELSE 0 END AS LikeStatus
+			CASE WHEN EXISTS (SELECT 1 FROM Likes WHERE WebId = w.WebId AND UserId = @userIdParam) THEN 1 ELSE 0 END AS LikeStatus
 		FROM 
 			Webs w
 		INNER JOIN 
@@ -33,8 +33,6 @@ BEGIN
 			Topics t ON p.TopicId = t.TopicId
 		LEFT JOIN 
 			LikeCounts lc ON w.WebId = lc.WebId
-		LEFT JOIN 
-			Likes l2 ON (w.WebId = l2.WebId AND l2.UserId = @userIdParam)
 		GROUP BY 
 			w.WebId, w.[Name], u.[Name], u.ProfileImageUrl, lc.LikeCount
 		ORDER BY 
