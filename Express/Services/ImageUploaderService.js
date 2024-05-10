@@ -48,7 +48,6 @@ async function uploadPosts(userId, webName, posts, tags){
       let uID_returned = (await request.query(query)).recordset[0].UserId;
       webTagUserIds.push(uID_returned);
     }
-    console.log(webTagUserIds);
     
 
     webName = fixApostropheIssue(webName);
