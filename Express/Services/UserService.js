@@ -22,12 +22,12 @@ async function getOrCreateUserId(name, url="") {
 
 async function getAllUsers() {
   try {
-    await sql.connet(sqlConfig);
+    await sql.connect(sqlConfig);
 
     const request = new sql.Request();
-    const result = await request.query('SELECT name FROM USER');
+    const result = (await request.query('SELECT name FROM USERS')).recordset;
     
-    return result.recordSet;
+    return result;
   } catch (error) {
     console.err('Error getting all users', err);
     throw err;
