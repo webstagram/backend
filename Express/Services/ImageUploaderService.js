@@ -37,16 +37,32 @@ function fixApostropheIssue(str){
   return ans;
 }
 
-async function uploadPosts(userId, webName, posts){
+async function uploadPosts(userId, webName, posts, tags){
   try {
     await sql.connect(sqlConfig);
     // See if the web exists
+    let webTagUserIds = [];
+    for (let userName of tags){
+      let query = `SELECT UserId FROM Users WHERE Name='${fixApostropheIssue(userName)}'`;
+      let request = new sql.Request();
+      let uID_returned = (await request.query(query)).recordset[0].UserId;
+      webTagUserIds.push(uID_returned);
+    }
+    console.log(webTagUserIds);
+    
+
     webName = fixApostropheIssue(webName);
     let query = `INSERT INTO Webs OUTPUT inserted.WebId VALUES (\'${webName}\', ${userId})`;
-    request = new sql.Request();
-    queryResult = (await request.query(query)).recordset;
+    let request = new sql.Request();
+    let queryResult = (await request.query(query)).recordset;
     let  webId = queryResult[0].WebId;
     
+    for (let uID of webTagUserIds){
+      let query = `INSERT INTO Tags (UserId, WebId) VALUES (${uID}, ${webId})`;
+      let request = new sql.Request();
+      let queryResult = (await request.query(query));
+    }
+
     // Add the posts and the images to the Web
     // Get TopicId
     // Add post to DB
