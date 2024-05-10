@@ -25,7 +25,7 @@ async function getAllUsers() {
     await sql.connect(sqlConfig);
 
     const request = new sql.Request();
-    const result = (await request.query('SELECT name FROM USERS')).recordset;
+    const result = (await request.query('SELECT name FROM USERS')).recordset.map((obj) => obj.name);
     
     return result;
   } catch (error) {

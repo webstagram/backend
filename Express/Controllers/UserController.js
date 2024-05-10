@@ -5,7 +5,6 @@ const userService = require('../Services/UserService')
 
 router.get('/', verifyToken, async (request, result) => {
   try {
-    console.log('in');
     const data = await userService.getAllUsers();
 
     result.status(200);
