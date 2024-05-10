@@ -6,6 +6,7 @@ const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 const REFRESH_SECRET_KEY = process.env.REFRESH_SECRET_KEY;
 
 async function authAndReturnJWT(requestToken) {
+        console.log(REFRESH_SECRET_KEY);
     try {
         const response = await fetch(`https://github.com/login/oauth/access_token?client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&code=${requestToken}`, {
             method: 'POST',

@@ -6,6 +6,7 @@ const loginRoute=require("./Controllers/LoginController");
 const webRoute=require("./Controllers/WebController");
 const imageRoute=require("./Controllers/ImageUploader");
 const likesRoute=require("./Controllers/LikesController");
+const usersRoute=require("./Controllers/UserController");
 const corsMiddleware=require("./Middleware/corsMiddleware");
 
 app.use(corsMiddleware);
@@ -24,6 +25,8 @@ app.use('/', loginRoute)
 app.use('/', imageRoute)
 app.use('/', likesRoute)
 app.use('/webs', webRoute);
+app.use('/users', usersRoute);
+
 app.listen(PORT, (error) => {
   if (!error)
     console.log("Server is Successfully Running, and App is listening on port " + PORT)
