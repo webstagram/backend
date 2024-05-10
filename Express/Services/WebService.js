@@ -9,8 +9,20 @@ async function getWebsWithTopics(userIdParam) {
       request.input('userIdParam', sql.Int, userIdParam);
       const result=await request.execute('GetWebsWithTopics');
 
-      const userId = result.recordset;
-      return userId;
+      let allWebs = result.recordset;
+
+      for (let web of allWebs){
+        let query = `SELECT [Name] FROM Users WHERE UserId IN (SELECT UserId FROM Tags WHERE WebId=${web.WebId});`;
+        const tagRequest = new sql.Request();
+        const tagResult = (await tagRequest.query(query)).recordset;
+        let taggedNames = [];
+        for (let userName of tagResult){
+          taggedNames.push(userName.Name);
+        }
+        web.Tags = taggedNames;
+      }
+
+      return allWebs;
     } catch (err) {
       console.error('Error running stored procedure', err);
       throw err; 
